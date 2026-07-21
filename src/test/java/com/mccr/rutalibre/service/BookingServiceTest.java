@@ -1,55 +1,38 @@
 package com.mccr.rutalibre.service;
 
+import com.mccr.rutalibre.exception.ClientNotFoundException;
+import com.mccr.rutalibre.model.Client;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ExtendWith(MockitoExtension.class)
 public class BookingServiceTest {
 
     @Test
     @DisplayName("Should verify the data of the customer renting the car")
-    void shouldVerifyDataOfTheClientBookingTheCar(){
+    void shouldVerifyDataOfTheClientBookingTheCar() {
         //Arrange
-        Client client = new Client();
-        DiverLicense license = new DriverLicense();
+        Client client = new Client(1L, "Claudia", "Cifuentes", "11111111-1", "claudia@mail.com");
 
-        license.setType("B");
-        license.setExpirationDate("01-01-2029");
-        client.setId(1L);
-        client.setName("Claudia");
-        client.setLastname("Cifuentes");
-        client.setRut("11111111-1");
-        client.setEmail("claudia@mail.com");
-        client.setPhone("+5691111111");
-        client.setDriverLicense(license);
-
-        //Act
-        String name = client.getName();
-        String lastname = client.lastname();
-        String rut = client.rut();
-
-
-        //Assert
-        assertEquals("Claudia",name);
-        assertEquals("Cifuentes",lastname);
-        assertEquals("11111111-1",rut);
-
-
+        //Act & Assert
+        assertEquals("Claudia", client.getName());
+        assertEquals("Cifuentes", client.getLastname());
+        assertEquals("11111111-1", client.getRut());
     }
 
     @Test
     @DisplayName("Should throw exception when the client doesn't exist")
-    void shouldThrowClientNotFoundWhenClientDoesNotExist(){
+    void shouldThrowClientNotFoundWhenClientDoesNotExist() {
         //Arrange
+        BookingService bookingService = new BookingService();
         Client client = null;
 
-        //Act
-
-        assertThrows(ClientNotFound.class, ()->)
-
-
-
+        //Act & Assert
+        assertThrows(ClientNotFoundException.class, () ->bookingService.createBooking(null));
     }
 }
