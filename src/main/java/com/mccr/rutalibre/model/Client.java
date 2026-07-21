@@ -6,15 +6,13 @@ public class Client {
     private Long id;
     private String name;
     private String lastname;
-    private String rut;
-    private String email;
+    private DriverLicense license;
 
-    public Client(Long id, String name, String lastname, String rut, String email) {
+    public Client(Long id, String name, String lastname, DriverLicense license) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
-        this.rut = rut;
-        this.email = email;
+        this.license = license;
     }
 
     public Long getId() {
@@ -41,19 +39,12 @@ public class Client {
         this.lastname = lastname;
     }
 
-    public String getRut() {
-        return rut;
+    public DriverLicense getLicense() {
+        return license;
     }
 
-    public void setRut(String rut) {
-        this.rut = rut;
+    public void setLicense(DriverLicense license) {
+        this.license = license;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
