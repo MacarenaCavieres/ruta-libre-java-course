@@ -5,14 +5,18 @@ public class Vehicle {
     private String plate;
     private String brand;
     private String model;
-    private boolean available;
+    private String year;
+    private String category;
+    private String status;
 
-    public Vehicle(Long id, String plate, String brand, String model, boolean available) {
+    public Vehicle(Long id, String plate, String brand, String model, String year, String category, String status) {
         this.id = id;
         this.plate = plate;
         this.brand = brand;
         this.model = model;
-        this.available = available;
+        this.year = year;
+        this.category = category;
+        this.status = status;
     }
 
     public Long getId() {
@@ -47,11 +51,29 @@ public class Vehicle {
         this.model = model;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public String getYear() {
+        return year;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public void setYear(String year) {
+        this.year = year;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
 }

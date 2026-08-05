@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "plate": "HGDF-45",
+    "brand": "Toyota",
+    "model": "Yaris",
+    "year": 2022,
+    "category": "Económico",
+    "status": "AVAILABLE"
+  },
+  {
+    "id": 2,
+    "plate": "KPLW-88",
+    "brand": "Hyundai",
+    "model": "Accent",
+    "year": 2021,
+    "category": "Económico",
+    "status": "RESERVED"
+  },
+  {
+    "id": 3,
+    "plate": "TRX-302",
+    "brand": "Chevrolet",
+    "model": "Tracker",
+    "year": 2023,
+    "category": "SUV",
+    "status": "RENTED"
+  },
+  {
+    "id": 4,
+    "plate": "JKLM-12",
+    "brand": "Mazda",
+    "model": "CX-5",
+    "year": 2024,
+    "category": "Premium",
+    "status": "AVAILABLE"
+  },
+  {
+    "id": 5,
+    "plate": "FBCS-77",
+    "brand": "Suzuki",
+    "model": "Swift",
+    "year": 2020,
+    "category": "Económico",
+    "status": "RENTED"
+  },
+  {
+    "id": 6,
+    "plate": "NPRD-54",
+    "brand": "Ford",
+    "model": "Ranger",
+    "year": 2022,
+    "category": "Camioneta",
+    "status": "AVAILABLE"
+  },
+  {
+    "id": 7,
+    "plate": "XWZQ-90",
+    "brand": "Kia",
+    "model": "Sportage",
+    "year": 2023,
+    "category": "SUV",
+    "status": "RESERVED"
+  }
+]

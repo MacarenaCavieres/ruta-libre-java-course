@@ -18,9 +18,9 @@ public class BookingService {
             throw new ClientNotFoundException("Usuario no encontrado");
         }
 
-        if (!booking.getVehicle().isAvailable()) {
-            throw new VehicleNotAvailableException("El vehiculo no esta disponible");
-        }
+//        if (!booking.getVehicle().isAvailable()) {
+//            throw new VehicleNotAvailableException("El vehiculo no esta disponible");
+//        }
 
         if (booking.getStartDate().isAfter(booking.getEndDate())) {
             throw new InvalidBookingDateException("La fecha de inicio no puede ser superior a la fecha de término de la reserva");

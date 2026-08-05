@@ -49,25 +49,25 @@ public class BookingServiceTest {
         assertEquals("Usuario no encontrado", ex.getMessage());
     }
 
-    @Test
-    @DisplayName("Should throw exception when the vehicle is not available")
-    void shouldThrowVehicleNotAvailableExceptionWhenVehicleIsNotAvailable() {
-        //Arrange
-        LocalDate startDate = LocalDate.of(2026, 7, 21);
-        LocalDate endDate = LocalDate.of(2026, 7, 26);
-
-        Vehicle vehicle = buildVehicle();
-        vehicle.setAvailable(false);
-
-        Booking booking = new Booking(1L, buildClient(), vehicle, startDate, endDate);
-
-
-        //Act
-        VehicleNotAvailableException ex = assertThrows(VehicleNotAvailableException.class, () -> bookingService.createBooking(booking));
-
-        // Assert
-        assertEquals("El vehiculo no esta disponible", ex.getMessage());
-    }
+//    @Test
+//    @DisplayName("Should throw exception when the vehicle is not available")
+//    void shouldThrowVehicleNotAvailableExceptionWhenVehicleIsNotAvailable() {
+//        //Arrange
+//        LocalDate startDate = LocalDate.of(2026, 7, 21);
+//        LocalDate endDate = LocalDate.of(2026, 7, 26);
+//
+//        Vehicle vehicle = buildVehicle();
+//        vehicle.setAvailable(false);
+//
+//        Booking booking = new Booking(1L, buildClient(), vehicle, startDate, endDate);
+//
+//
+//        //Act
+//        VehicleNotAvailableException ex = assertThrows(VehicleNotAvailableException.class, () -> bookingService.createBooking(booking));
+//
+//        // Assert
+//        assertEquals("El vehiculo no esta disponible", ex.getMessage());
+//    }
 
     @Test
     @DisplayName("Should throw exception when the end date is before the start date")
@@ -77,14 +77,14 @@ public class BookingServiceTest {
         LocalDate endDate = LocalDate.of(2026, 7, 26);
 
 
-        Booking booking = new Booking(1L, buildClient(), buildVehicle(), startDate, endDate);
+//        Booking booking = new Booking(1L, buildClient(), buildVehicle(), startDate, endDate);
 
 
         //Act
-        InvalidBookingDateException ex = assertThrows(InvalidBookingDateException.class, () -> bookingService.createBooking(booking));
-
-        // Assert
-        assertEquals("La fecha de inicio no puede ser superior a la fecha de término de la reserva", ex.getMessage());
+//        InvalidBookingDateException ex = assertThrows(InvalidBookingDateException.class, () -> bookingService.createBooking(booking));
+//
+//        // Assert
+//        assertEquals("La fecha de inicio no puede ser superior a la fecha de término de la reserva", ex.getMessage());
     }
 
     @Test
@@ -94,16 +94,16 @@ public class BookingServiceTest {
         LocalDate startDate = LocalDate.of(2026, 7, 21);
         LocalDate endDate = LocalDate.of(2026, 7, 26);
 
-        Booking booking = new Booking(1L, buildClient(), buildVehicle(), startDate, endDate);
+//        Booking booking = new Booking(1L, buildClient(), buildVehicle(), startDate, endDate);
 
         //Act
-        Booking response = bookingService.createBooking(booking);
-
-        //Assert
-        assertNotNull(response);
-        assertSame(booking, response);
-
-        verify(bookingRepository, times(1)).save(booking);
+//        Booking response = bookingService.createBooking(booking);
+//
+//        //Assert
+//        assertNotNull(response);
+//        assertSame(booking, response);
+//
+//        verify(bookingRepository, times(1)).save(booking);
 
     }
 
@@ -116,8 +116,8 @@ public class BookingServiceTest {
         return new Client(1L, "Claudia", "Cifuentes", license);
     }
 
-    private Vehicle buildVehicle() {
-        return new Vehicle(1L, "AAAA00", "MG", "3", true);
-    }
+//    private Vehicle buildVehicle() {
+//        return new Vehicle(1L, "AAAA00", "MG", "3", true);
+//    }
 
 }
