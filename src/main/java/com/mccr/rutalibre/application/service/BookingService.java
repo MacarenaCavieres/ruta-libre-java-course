@@ -1,10 +1,9 @@
-package com.mccr.rutalibre.service;
+package com.mccr.rutalibre.application.service;
 
-import com.mccr.rutalibre.exception.ClientNotFoundException;
-import com.mccr.rutalibre.exception.InvalidBookingDateException;
-import com.mccr.rutalibre.exception.VehicleNotAvailableException;
-import com.mccr.rutalibre.model.Booking;
-import com.mccr.rutalibre.repository.BookingRepository;
+import com.mccr.rutalibre.domain.exception.ClientNotFoundException;
+import com.mccr.rutalibre.domain.exception.InvalidBookingDateException;
+import com.mccr.rutalibre.domain.model.Booking;
+import com.mccr.rutalibre.domain.repository.BookingRepository;
 
 public class BookingService {
     private final BookingRepository bookingRepository;
@@ -14,7 +13,7 @@ public class BookingService {
     }
 
     public Booking createBooking(Booking booking) {
-        if (booking.getClient().getId() == null) {
+        if (booking.client().getId() == null) {
             throw new ClientNotFoundException("Usuario no encontrado");
         }
 
@@ -22,7 +21,7 @@ public class BookingService {
 //            throw new VehicleNotAvailableException("El vehiculo no esta disponible");
 //        }
 
-        if (booking.getStartDate().isAfter(booking.getEndDate())) {
+        if (booking.startDate().isAfter(booking.endDate())) {
             throw new InvalidBookingDateException("La fecha de inicio no puede ser superior a la fecha de término de la reserva");
         }
 

@@ -1,74 +1,144 @@
 # Ruta Libre
 
-Ruta Libre is a Java project that simulates the booking process for a car rental system. The focus of this first
-milestone is the implementation of the domain business logic and its validation through unit testing using Test-Driven
-Development (TDD).
+Ruta Libre is a Java project that simulates the booking process for a car rental system.
+
+This project was restructured following the principles of **Clean Architecture**, **Domain-Driven Design (DDD)**, and *
+*Test-Driven Development (TDD)**. The main goal is to keep the business domain independent from frameworks and
+infrastructure while organizing the application around domain entities, value objects, repository contracts, and use
+cases.
 
 ## Architecture
 
-This project implements a **Pure Domain Core** following the principles of **Clean Architecture (Ports and Adapters)**.
+The project follows the principles of **Clean Architecture (Ports and Adapters)**, separating the business domain from
+application logic and external infrastructure.
 
-The business logic is completely independent from external technologies:
+### Package Structure
 
-- No Spring Boot.
-- No JPA or database integration.
-- No web framework dependencies.
-- External dependencies are abstracted through interfaces and injected via constructor injection.
+```text
+src/
+├── main/
+│   └── java/
+│       └── com/mccr/rutalibre/
+│           ├── domain/
+│           │   ├── model/
+│           │   │   ├── Booking.java
+│           │   │   ├── Client.java
+│           │   │   ├── DriverLicense.java
+│           │   │   └── Vehicle.java
+│           │   │
+│           │   └── repository/
+│           │       └── BookingRepository.java
+│           │
+│           └── application/
+│               └── usecase/
+│                   └── CreateBookingUseCase.java
+│
+└── test/
+    └── java/
+        └── com/mccr/rutalibre/
+            └── usecase/
+                └── CreateBookingUseCaseTest.java
+```
 
-Unit tests are implemented using **JUnit 5** and **Mockito**, ensuring that the domain logic is tested in isolation.
+### Domain
+
+The `domain` layer contains the core business logic of the application.
+
+* **Entities:** `Booking`, `Client`, and `Vehicle` have unique identities and encapsulate their business rules.
+* **Value Objects:** `DriverLicense` is implemented as an immutable Java `record` with defensive validation.
+* **Repository contracts:** `BookingRepository` defines the persistence operations required by the domain without
+  depending on any framework or infrastructure technology.
+
+### Application
+
+The `application` layer contains the use cases that orchestrate business flows.
+
+* `CreateBookingUseCase` is responsible for the booking creation flow.
+* Dependencies are provided through **constructor injection**.
+* The use case depends only on the `BookingRepository` interface and does not instantiate concrete repository
+  implementations.
+
+### Infrastructure
+
+No infrastructure implementation is included in this milestone. Repository implementations can be added later without
+modifying the domain or application layers.
+
+The project does not depend on:
+
+* Spring Boot
+* JPA
+* Hibernate
+* Web frameworks
+* Database-specific implementations
+
+This keeps the core of the application independent from external technologies.
 
 ## Technologies
 
-- Java 21
-- Maven
-- JUnit 5 (Jupiter)
-- Mockito
-- JaCoCo
+* Java 21
+* Maven
+* JUnit 5 (Jupiter)
+* Mockito
+* JaCoCo
 
-## Running the Test Suite
+## Running the Project
 
-From the project root, execute:
+### Compile
+
+To compile and verify the project:
 
 ```bash
-mvn clean test
+mvn clean compile
 ```
 
-## Generating the Code Coverage Report
+### Run Unit Tests
 
-From the project root, execute:
+To execute the complete unit test suite:
+
+```bash
+mvn test
+```
+
+The tests validate the domain rules and the decoupling between the application use cases and repository implementations.
+
+## Code Coverage
+
+JaCoCo is used to measure test coverage.
+
+To generate the coverage report:
 
 ```bash
 mvn jacoco:report
 ```
 
-Alternatively, you can generate the tests and coverage report in a single command:
-
-```bash
-mvn clean test
-```
-
-## Coverage Report
-
-![Coverage Report](/imgs/coverage.png)
-
-## Coverage Report Location
-
-After generating the report, open the following file in your browser:
+The generated report can be found at:
 
 ```text
 target/site/jacoco/index.html
 ```
 
----
+## Implemented Domain Rules
 
-## Implemented Business Rules
+The booking domain includes the following validations and business behaviors:
 
-The first milestone includes the implementation of the booking creation process through the `BookingService`, including
-the following business rules:
+* Booking must have a valid unique identifier.
+* A booking must have a valid client and vehicle.
+* Booking dates cannot be null.
+* The booking start date cannot be later than the end date.
+* A client must have a valid driver license.
+* A vehicle must have valid identification and information.
+* A vehicle can only be reserved when its status is `AVAILABLE`.
+* A booking cannot be created if a booking with the same identifier already exists.
 
-- Validate that a client is associated with the booking.
-- Validate that the selected vehicle is available.
-- Validate that the booking start date is not later than the end date.
-- Save the booking through a repository interface, keeping the domain independent from infrastructure.
+These rules are implemented within the domain model and application use case rather than relying on external frameworks.
 
-All business rules are covered by unit tests following the **Arrange – Act – Assert (AAA)** pattern.
+## Testing
+
+Unit tests use the **Arrange – Act – Assert (AAA)** pattern and **Mockito** to isolate the application use case from the
+repository.
+
+The `CreateBookingUseCaseTest` verifies, among other behaviors:
+
+* Successful booking creation.
+* Prevention of duplicate bookings.
+* Interaction with the `BookingRepository` contract.
