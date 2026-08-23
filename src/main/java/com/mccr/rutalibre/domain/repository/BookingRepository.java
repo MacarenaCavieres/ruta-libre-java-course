@@ -1,12 +1,9 @@
 package com.mccr.rutalibre.domain.repository;
 
 import com.mccr.rutalibre.domain.model.Booking;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
 
-public interface BookingRepository {
+public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    void save(Booking booking);
-
-    Optional<Booking> findById(Long id);
 }
