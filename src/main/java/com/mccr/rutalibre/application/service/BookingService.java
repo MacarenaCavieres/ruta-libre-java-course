@@ -1,6 +1,7 @@
 package com.mccr.rutalibre.application.service;
 
-import com.mccr.rutalibre.domain.exception.ClientNotFoundException;
+import com.mccr.rutalibre.domain.exception.BookingNotCreatedException;
+import com.mccr.rutalibre.domain.exception.BookingNotFoundException;
 import com.mccr.rutalibre.domain.exception.InvalidBookingDateException;
 import com.mccr.rutalibre.domain.model.Booking;
 import com.mccr.rutalibre.domain.repository.BookingRepository;
@@ -17,13 +18,16 @@ public class BookingService {
     private final BookingRepository bookingRepository;
 
     public Booking createBooking(Booking booking) {
-        if (booking.startDate().isAfter(booking.endDate())) {
+        if (booking.getStartDate().isAfter(booking.getEndDate())) {
             throw new InvalidBookingDateException("La fecha de inicio no puede ser superior a la fecha de término de la reserva");
         }
 
-        bookingRepository.save(booking);
+        Booking newBooking = bookingRepository.save(booking);
 
-        return booking;
+        if (newBooking.getId() == null) {
+            throw new BookingNotCreatedException("La Reserva no se pudo crear");
+        }
+        return newBooking;
 
     }
 
@@ -31,10 +35,30 @@ public class BookingService {
         return bookingRepository.findAll();
     }
 
-    public Booking updateBooking(Booking booking) {
-        Booking oldBooking = bookingRepository.findById(booking.id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reserva no encontrada"));
+    public Booking updateBooking(Long id, Booking booking) {
+        Booking oldBooking = bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException("Reserva no encontrada"));
 
+        if (booking.getStartDate().isAfter(booking.getEndDate())) {
+            throw new InvalidBookingDateException("La fecha de inicio no puede ser superior a la fecha de término de la reserva");
+        }
 
-        return booking;
+        oldBooking.setClient(booking.getClient());
+        oldBooking.setVehicle(booking.getVehicle());
+        oldBooking.setStartDate(booking.getStartDate());
+        oldBooking.setEndDate(booking.getEndDate());
+
+        bookingRepository.save(oldBooking);
+
+        return oldBooking;
+    }
+
+    public String deleteBooking(Long id) {
+        if (!bookingRepository.existsById(id)) {
+            throw new BookingNotFoundException("Reserva no encontrada");
+        }
+
+        bookingRepository.deleteById(id);
+
+        return "Reserva eliminada correctamente";
     }
 }

@@ -1,31 +1,37 @@
 package com.mccr.rutalibre.domain.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
-public record Booking(Long id, Client client, Vehicle vehicle, LocalDate startDate, LocalDate endDate) {
+@Setter
+@Getter
+public class Booking {
 
-    public Booking {
-        if (id == null) {
-            throw new IllegalArgumentException("Booking id cannot be null");
-        }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        if (client == null) {
-            throw new IllegalArgumentException("Client cannot be null");
-        }
+    @NotBlank(message = "El campo cliente no puede estar vacío")
+    @Column(nullable = false)
+    private Client client;
 
-        if (vehicle == null) {
-            throw new IllegalArgumentException("Vehicle cannot be null");
-        }
+    @NotBlank(message = "El campo vehículo no puede estar vacío")
+    @Column(nullable = false)
+    private Vehicle vehicle;
 
-        if (startDate == null || endDate == null) {
-            throw new IllegalArgumentException("Booking dates cannot be null");
-        }
+    @NotBlank(message = "La fecha de inicio de la reserva no puede ir vacía")
+    @Column(nullable = false)
+    private LocalDate startDate;
 
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException(
-                    "Start date cannot be after end date"
-            );
-        }
+    @NotBlank(message = "La fecha de fin de la reserva no puede ir vacía")
+    @Column(nullable = false)
+    private LocalDate endDate;
 
-    }
 }
