@@ -1,96 +1,41 @@
 package com.mccr.rutalibre.domain.model;
 
+import com.mccr.rutalibre.domain.model.enums.VehicleStatus;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table(name = "vehicles")
+@Getter
+@Setter
 public class Vehicle {
 
-    private final Long id;
-    private final String plate;
-    private final String brand;
-    private final String model;
-    private final String year;
-    private final String category;
-    private String status;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Vehicle(
-            Long id,
-            String plate,
-            String brand,
-            String model,
-            String year,
-            String category,
-            String status
-    ) {
-        if (id == null) {
-            throw new IllegalArgumentException("Vehicle id cannot be null");
-        }
+    @NotBlank(message = "La patente no puede estar vacía")
+    @Column(nullable = false, unique = true)
+    private String plate;
 
-        if (plate == null || plate.isBlank()) {
-            throw new IllegalArgumentException("Vehicle plate cannot be blank");
-        }
+    @NotBlank(message = "La marca del vehículo no puede estar vacía")
+    @Column(nullable = false)
+    private String brand;
 
-        if (brand == null || brand.isBlank()) {
-            throw new IllegalArgumentException("Vehicle brand cannot be blank");
-        }
+    @NotBlank(message = "El modelo del vehículo no puede estar vacío")
+    @Column(nullable = false)
+    private String model;
 
-        if (model == null || model.isBlank()) {
-            throw new IllegalArgumentException("Vehicle model cannot be blank");
-        }
+    @NotBlank(message = "El año del vehículo no puede estar vacío")
+    @Column(nullable = false)
+    private String year;
 
-        if (year == null || year.isBlank()) {
-            throw new IllegalArgumentException("Vehicle year cannot be blank");
-        }
+    @NotNull(message = "El estado del vehículo no puede estar vacío")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private VehicleStatus status;
 
-        if (category == null || category.isBlank()) {
-            throw new IllegalArgumentException("Vehicle category cannot be blank");
-        }
-
-        if (status == null || status.isBlank()) {
-            throw new IllegalArgumentException("Vehicle status cannot be blank");
-        }
-
-        this.id = id;
-        this.plate = plate;
-        this.brand = brand;
-        this.model = model;
-        this.year = year;
-        this.category = category;
-        this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getPlate() {
-        return plate;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void reserve() {
-        if (!status.equals("AVAILABLE")) {
-            throw new IllegalStateException(
-                    "Vehicle is not available"
-            );
-        }
-
-        status = "RENTED";
-    }
 }

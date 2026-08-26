@@ -1,19 +1,16 @@
 package com.mccr.rutalibre.domain.model;
 
-public record DriverLicense(
-        String type,
-        String expirationDate
-) {
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-    public DriverLicense {
-        if (type == null || type.isBlank()) {
-            throw new IllegalArgumentException("License type cannot be blank");
-        }
+import java.time.LocalDate;
 
-        if (expirationDate == null || expirationDate.isBlank()) {
-            throw new IllegalArgumentException(
-                    "License expiration date cannot be blank"
-            );
-        }
-    }
+@Embeddable
+@Getter
+@Setter
+public class DriverLicense {
+
+    private String type = "B";
+    private LocalDate expirationDate = LocalDate.of(2030, 1, 1);
 }

@@ -1,13 +1,12 @@
 package com.mccr.rutalibre.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
+@Table(name = "clients")
 @Getter
 @Setter
 public class Client {
@@ -24,9 +23,6 @@ public class Client {
     @Column(nullable = false)
     private String lastname;
 
-    @NotBlank(message = "La licencia no puede estar vacía")
-    @Column(nullable = false)
-    private DriverLicense license;
-
-
+    @Embedded
+    private DriverLicense license = new DriverLicense();
 }
