@@ -33,4 +33,10 @@ public class Booking {
     @Column(nullable = false)
     private LocalDate endDate;
 
+    public Booking(Client client, Vehicle vehicle, LocalDate startDate, LocalDate endDate) {
+        this.client = client;
+        this.vehicle = vehicle;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }

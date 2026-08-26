@@ -93,4 +93,14 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
+
+    @ExceptionHandler(VehicleWithPlateExistsException.class)
+    public ResponseEntity<Map<String, Object>> handleVehicleNotFound(VehicleWithPlateExistsException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", 400);
+        body.put("error", "Bad Request");
+        body.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
 }

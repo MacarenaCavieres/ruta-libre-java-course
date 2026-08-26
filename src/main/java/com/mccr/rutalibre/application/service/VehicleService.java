@@ -2,12 +2,14 @@ package com.mccr.rutalibre.application.service;
 
 import com.mccr.rutalibre.domain.exception.VehicleNotCreatedException;
 import com.mccr.rutalibre.domain.exception.VehicleNotFoundException;
+import com.mccr.rutalibre.domain.exception.VehicleWithPlateExistsException;
 import com.mccr.rutalibre.domain.model.Vehicle;
 import com.mccr.rutalibre.domain.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +17,12 @@ public class VehicleService {
     final private VehicleRepository vehicleRepository;
 
     public Vehicle createVehicle(Vehicle vehicle) {
+        Optional<Vehicle> optionalVehicle = vehicleRepository.findByPlate(vehicle.getPlate());
+
+        if (optionalVehicle.isPresent()) {
+            throw new VehicleWithPlateExistsException("Un vehículo con esa patente ya existe");
+        }
+
         Vehicle newVehicle = vehicleRepository.save(vehicle);
 
         if (newVehicle.getId() == null) {
