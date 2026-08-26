@@ -36,6 +36,6 @@ public class Vehicle {
     @NotNull(message = "El estado del vehículo no puede estar vacío")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private VehicleStatus status;
+    private VehicleStatus status = VehicleStatus.AVAILABLE;
 
 }

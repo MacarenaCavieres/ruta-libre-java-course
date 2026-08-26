@@ -64,13 +64,33 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 
-    @ExceptionHandler(ClientNotCreated.class)
-    public ResponseEntity<Map<String, Object>> handleClientNotCreated(ClientNotCreated ex) {
+    @ExceptionHandler(ClientNotCreatedException.class)
+    public ResponseEntity<Map<String, Object>> handleClientNotCreated(ClientNotCreatedException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", 500);
         body.put("error", "Internal Server Error");
         body.put("message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
+    @ExceptionHandler(VehicleNotCreatedException.class)
+    public ResponseEntity<Map<String, Object>> handleVehicleNotCreated(VehicleNotCreatedException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", 500);
+        body.put("error", "Internal Server Error");
+        body.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
+    @ExceptionHandler(VehicleNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleVehicleNotFound(VehicleNotFoundException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", 404);
+        body.put("error", "Not Found");
+        body.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 }

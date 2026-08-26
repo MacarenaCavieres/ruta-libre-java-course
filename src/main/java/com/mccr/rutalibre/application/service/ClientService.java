@@ -1,12 +1,11 @@
 package com.mccr.rutalibre.application.service;
 
+import com.mccr.rutalibre.domain.exception.ClientNotCreatedException;
 import com.mccr.rutalibre.domain.exception.ClientNotFoundException;
 import com.mccr.rutalibre.domain.model.Client;
 import com.mccr.rutalibre.domain.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,8 +18,7 @@ public class ClientService {
         Client newClient = clientRepository.save(client);
 
         if (newClient.getId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Error: No se pudo crear el cliente");
+            throw new ClientNotCreatedException("No se pudo crear el cliente");
         }
 
         return newClient;
