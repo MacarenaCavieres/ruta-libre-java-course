@@ -1,144 +1,108 @@
-# Ruta Libre
+# Ruta Libre - REST API
 
-Ruta Libre is a Java project that simulates the booking process for a car rental system.
+**Ruta Libre** es una API REST desarrollada en Spring Boot para gestionar el proceso de reserva y arriendo de vehículos.
+El sistema gestiona clientes, vehículos de la flota y la creación/actualización de reservas, manteniendo las reglas de
+negocio del dominio.
 
-This project was restructured following the principles of **Clean Architecture**, **Domain-Driven Design (DDD)**, and *
-*Test-Driven Development (TDD)**. The main goal is to keep the business domain independent from frameworks and
-infrastructure while organizing the application around domain entities, value objects, repository contracts, and use
-cases.
+## Pila Tecnológica
 
-## Architecture
+* **Lenguaje:** Java 21
+* **Framework:** Spring Boot 3.x
+* **Persistencia:** Spring Data JPA / Hibernate
+* **Base de Datos:** PostgreSQL 16 (vía Docker)
+* **Documentación & Contratos:** SpringDoc OpenAPI 3 / Swagger-UI
+* **Gestor de Dependencias:** Maven
+* **Otras Herramientas:** Lombok, Jakarta Validation
 
-The project follows the principles of **Clean Architecture (Ports and Adapters)**, separating the business domain from
-application logic and external infrastructure.
+---
 
-### Package Structure
+## 🛠️ Arquitectura y Estructura del Proyecto
+
+El proyecto sigue los principios de **Clean Architecture** y **Domain-Driven Design (DDD)**, organizando el código por
+capas claras de dominio y exposición web.
 
 ```text
 src/
-├── main/
-│   └── java/
-│       └── com/mccr/rutalibre/
-│           ├── domain/
-│           │   ├── model/
-│           │   │   ├── Booking.java
-│           │   │   ├── Client.java
-│           │   │   ├── DriverLicense.java
-│           │   │   └── Vehicle.java
-│           │   │
-│           │   └── repository/
-│           │       └── BookingRepository.java
-│           │
-│           └── application/
-│               └── usecase/
-│                   └── CreateBookingUseCase.java
-│
-└── test/
+└── main/
     └── java/
         └── com/mccr/rutalibre/
-            └── usecase/
-                └── CreateBookingUseCaseTest.java
+            ├── application/
+            │   ├── config/
+            │   │   └── OpenApiConfig.java
+            │   └── service/
+            │       ├── BookingService.java
+            │       ├── ClientService.java
+            │       └── VehicleService.java
+            └── domain/
+                ├── controller/
+                │   ├── BookingController.java
+                │   ├── ClientController.java
+                │   └── VehicleController.java
+                ├── dto/
+                │   └── booking/
+                │       ├── CreateBookingRequest.java
+                │       └── UpdateBookingRequest.java
+                ├── model/
+                │   ├── enums/
+                │   │   └── VehicleStatus.java
+                │   ├── Booking.java
+                │   ├── Client.java
+                │   ├── DriverLicense.java
+                │   └── Vehicle.java
+                └── repository/
+                    ├── BookingRepository.java
+                    ├── ClientRepository.java
+                    └── VehicleRepository.java      
 ```
 
-### Domain
+### Componentes Principales
 
-The `domain` layer contains the core business logic of the application.
+* **Entidades de Dominio (`domain.model`):**
+    * `Booking`: Representa la reserva vinculando un `Client` y un `Vehicle` con sus fechas de arriendo.
+    * `Client`: Información personal del cliente con su licencia embebida (`DriverLicense`).
+    * `Vehicle`: Flota de vehículos (patente, marca, modelo, año) y su estado (`AVAILABLE`, etc.).
+* **DTOs / Records (`domain.dto`):** Objetos de entrada para la creación y actualización con validaciones (
+  `CreateBookingRequest`, `UpdateBookingRequest`).
+* **Controladores REST (`web.controller`):** Exposición de los endpoints HTTP (`BookingController`, `ClientController`,
+  `VehicleController`) documentados con anotaciones de OpenAPI.
 
-* **Entities:** `Booking`, `Client`, and `Vehicle` have unique identities and encapsulate their business rules.
-* **Value Objects:** `DriverLicense` is implemented as an immutable Java `record` with defensive validation.
-* **Repository contracts:** `BookingRepository` defines the persistence operations required by the domain without
-  depending on any framework or infrastructure technology.
+---
 
-### Application
+## 1. Instrucciones para Levantar la Base de Datos
 
-The `application` layer contains the use cases that orchestrate business flows.
+El entorno de desarrollo utiliza **PostgreSQL 16** containerizado a través de Docker Compose con persistencia de datos
+mediante volúmenes nombrados.
 
-* `CreateBookingUseCase` is responsible for the booking creation flow.
-* Dependencies are provided through **constructor injection**.
-* The use case depends only on the `BookingRepository` interface and does not instantiate concrete repository
-  implementations.
-
-### Infrastructure
-
-No infrastructure implementation is included in this milestone. Repository implementations can be added later without
-modifying the domain or application layers.
-
-The project does not depend on:
-
-* Spring Boot
-* JPA
-* Hibernate
-* Web frameworks
-* Database-specific implementations
-
-This keeps the core of the application independent from external technologies.
-
-## Technologies
-
-* Java 21
-* Maven
-* JUnit 5 (Jupiter)
-* Mockito
-* JaCoCo
-
-## Running the Project
-
-### Compile
-
-To compile and verify the project:
+Para iniciar el contenedor de la base de datos en segundo plano, ejecuta:
 
 ```bash
-mvn clean compile
+docker compose up -d
 ```
 
-### Run Unit Tests
+> **Nota:** Esto creará el contenedor `pg-rutalibre` escuchando en el puerto `5432` con la base de datos `rutalibre_db`.
 
-To execute the complete unit test suite:
+---
+
+## 2. Instrucciones para Ejecutar la Aplicación en Modo Desarrollo
+
+Una vez levantado el contenedor de PostgreSQL, puedes iniciar el servidor Spring Boot en el perfil de desarrollo (
+`dev`):
 
 ```bash
-mvn test
+./mvnw spring-boot:run
 ```
 
-The tests validate the domain rules and the decoupling between the application use cases and repository implementations.
-
-## Code Coverage
-
-JaCoCo is used to measure test coverage.
-
-To generate the coverage report:
-
-```bash
-mvn jacoco:report
+```
+.\mvnw.cmd spring-boot:run
 ```
 
-The generated report can be found at:
+## 3. Ruta de Documentación y Pruebas de Contratos
 
-```text
-target/site/jacoco/index.html
-```
+Con la aplicación en ejecución en el entorno local (`dev`), puedes acceder a la interfaz gráfica interactiva de Swagger
+UI y a la especificación OpenAPI a través de las siguientes URLs:
 
-## Implemented Domain Rules
+* **Swagger-UI (Interfaz interactiva):**  
+  http://localhost:8080/swagger-ui.html
 
-The booking domain includes the following validations and business behaviors:
-
-* Booking must have a valid unique identifier.
-* A booking must have a valid client and vehicle.
-* Booking dates cannot be null.
-* The booking start date cannot be later than the end date.
-* A client must have a valid driver license.
-* A vehicle must have valid identification and information.
-* A vehicle can only be reserved when its status is `AVAILABLE`.
-* A booking cannot be created if a booking with the same identifier already exists.
-
-These rules are implemented within the domain model and application use case rather than relying on external frameworks.
-
-## Testing
-
-Unit tests use the **Arrange – Act – Assert (AAA)** pattern and **Mockito** to isolate the application use case from the
-repository.
-
-The `CreateBookingUseCaseTest` verifies, among other behaviors:
-
-* Successful booking creation.
-* Prevention of duplicate bookings.
-* Interaction with the `BookingRepository` contract.
+* **OpenAPI JSON (Especificación OpenAPI 3):**  
+  http://localhost:8080/api-docs
