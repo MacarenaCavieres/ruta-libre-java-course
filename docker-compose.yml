@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: pg-rutalibre
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME:-rutalibre_db}
+      POSTGRES_USER: ${DB_USER:-rutalibre_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-rutalibre_pass}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
