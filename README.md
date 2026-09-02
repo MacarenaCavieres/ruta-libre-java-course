@@ -28,6 +28,7 @@ src/
         └── com/mccr/rutalibre/
             ├── application/
             │   ├── config/
+            │   │   ├── CorsConfig.java
             │   │   └── OpenApiConfig.java
             │   └── service/
             │       ├── BookingService.java
@@ -106,3 +107,18 @@ UI y a la especificación OpenAPI a través de las siguientes URLs:
 
 * **OpenAPI JSON (Especificación OpenAPI 3):**  
   http://localhost:8080/api-docs
+
+## 4. Integración con el Frontend
+
+El Frontend de la aplicación (desarrollado en React + Vite + TypeScript) consumirá esta API REST a través de HTTP (
+`http://localhost:8080`).
+
+### Enlace al Repositorio Client
+
+* **Frontend Web App:
+  ** [ruta-libre-frontend-java-course](https://github.com/MacarenaCavieres/ruta-libre-frontend-java-course)
+
+## 5. Soporte CORS
+
+Para permitir que la aplicación cliente interactúe con el backend desde su servidor de desarrollo (ej.
+`http://localhost:5173`), la API expone reglas CORS en su configuración global en Spring Boot mediante:
