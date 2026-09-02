@@ -45,4 +45,4 @@ public class Vehicle {
     @Column(nullable = false)
     @Schema(description = "Estado operativo actual", example = "AVAILABLE")
     private VehicleStatus status = VehicleStatus.AVAILABLE;
-}
+}   
